@@ -60,4 +60,10 @@ public class OAuthClient {
         httpClient.execute(httpPost, this.responseHandler);
         return authToken;
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        httpClient.close();
+    }
 }
