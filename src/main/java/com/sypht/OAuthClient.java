@@ -9,22 +9,25 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.json.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * Hello world!
  */
-public class Client {
-    protected static String SYPHT_API_BASE_ENDPOINT = "https://api.sypht.com";
+public class OAuthClient {
     protected static String SYPHT_AUTH_ENDPOINT = "https://login.sypht.com/oauth/token";
-    protected static String SYPHT_OAUTH_COMPANY_ID_CLAIM_KEY = "https://api.sypht.com/companyId";
+    protected CloseableHttpClient httpClient;
+    protected String authToken;
 
+    public OAuthClient() {
+        this.httpClient = HttpClients.createDefault();
+    }
 
-    public static void main(String[] args) throws IOException {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
+    public String login() throws IOException {
         HttpPost httpPost = new HttpPost(SYPHT_AUTH_ENDPOINT);
         httpPost.setHeader("Accepts", "application/json");
         httpPost.setHeader("Content-Type", "application/json");
@@ -41,22 +44,23 @@ public class Client {
 
         // Create a custom response handler
         ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
             @Override
             public String handleResponse(
                     final HttpResponse response) throws ClientProtocolException, IOException {
                 int status = response.getStatusLine().getStatusCode();
                 if (status >= 200 && status < 300) {
                     HttpEntity entity = response.getEntity();
-                    return entity != null ? EntityUtils.toString(entity) : null;
+                    String responseBody = entity != null ? EntityUtils.toString(entity) : null;
+                    JSONObject obj = new JSONObject(responseBody);
+                    authToken = obj.getString("access_token");
                 } else {
                     throw new ClientProtocolException("Unexpected response status: " + status);
                 }
+                return authToken;
             }
 
         };
-        String responseBody = httpclient.execute(httpPost, responseHandler);
-        System.out.println("----------------------------------------");
-        System.out.println(responseBody);
+        httpClient.execute(httpPost, responseHandler);
+        return authToken;
     }
 }
