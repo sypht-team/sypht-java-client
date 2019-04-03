@@ -12,8 +12,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.*;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 /**
  * Hello world!
@@ -21,7 +19,6 @@ import java.util.Map;
 public class OAuthClient {
     protected static String SYPHT_AUTH_ENDPOINT = "https://login.sypht.com/oauth/token";
     protected CloseableHttpClient httpClient;
-    protected String authToken;
     protected ResponseHandler<String> responseHandler;
 
     public OAuthClient() {
@@ -43,7 +40,7 @@ public class OAuthClient {
         };
     }
 
-    public String login() throws IOException {
+    public String login() throws IOException, ClientProtocolException {
         HttpPost httpPost = new HttpPost(SYPHT_AUTH_ENDPOINT);
         httpPost.setHeader("Accepts", "application/json");
         httpPost.setHeader("Content-Type", "application/json");
