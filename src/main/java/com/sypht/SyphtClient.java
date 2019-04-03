@@ -20,14 +20,13 @@ import java.io.IOException;
 /**
  * Connect to Sypht to upload files and retrieve result.
  */
-public class SyphtClient {
+public class SyphtClient extends com.sypht.CloseableHttpClient {
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";
-    protected CloseableHttpClient httpClient;
     protected ResponseHandler<String> jsonSuccessResponseHandler;
     protected String bearerToken;
 
     public SyphtClient() {
-        this.httpClient = HttpClients.createDefault();
+        super();
         this.jsonSuccessResponseHandler = new ResponseHandler<String>() {
             @Override
             public String handleResponse(
@@ -60,9 +59,9 @@ public class SyphtClient {
 
         HttpEntity entity = builder.build();
         httpPost.setEntity(entity);
-        HttpResponse response = httpClient.execute(httpPost);
+        HttpResponse response = super.httpClient.execute(httpPost);
 
-        String responseBody = httpClient.execute(httpPost, this.jsonSuccessResponseHandler);
+        String responseBody = super.httpClient.execute(httpPost, this.jsonSuccessResponseHandler);
         JSONObject obj = new JSONObject(responseBody);
         return obj.getString("fileId");
     }
@@ -87,11 +86,5 @@ public class SyphtClient {
         httpGet.setHeader("Content-Type", "application/json");
         httpGet.setHeader("Authorization", "Bearer " + getBearerToken());
         return new JSONObject(httpClient.execute(httpGet, this.jsonSuccessResponseHandler));
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        httpClient.close();
     }
 }

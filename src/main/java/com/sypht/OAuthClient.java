@@ -16,13 +16,12 @@ import java.io.IOException;
 /**
  * Hello world!
  */
-public class OAuthClient {
+public class OAuthClient extends com.sypht.CloseableHttpClient {
     protected static String SYPHT_AUTH_ENDPOINT = "https://login.sypht.com/oauth/token";
-    protected CloseableHttpClient httpClient;
     protected ResponseHandler<String> responseHandler;
 
     public OAuthClient() {
-        this.httpClient = HttpClients.createDefault();
+        super();
         this.responseHandler = new ResponseHandler<String>() {
             @Override
             public String handleResponse(
@@ -56,9 +55,4 @@ public class OAuthClient {
         return httpClient.execute(httpPost, this.responseHandler);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        httpClient.close();
-    }
 }
