@@ -40,7 +40,7 @@ public class OAuthClient {
         };
     }
 
-    public String login() throws IOException, ClientProtocolException {
+    public String login() throws IOException {
         HttpPost httpPost = new HttpPost(SYPHT_AUTH_ENDPOINT);
         httpPost.setHeader("Accepts", "application/json");
         httpPost.setHeader("Content-Type", "application/json");

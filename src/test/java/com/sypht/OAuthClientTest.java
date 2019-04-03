@@ -11,12 +11,12 @@ import java.io.IOException;
 /**
  * Unit test for simple App.
  */
-public class LoginTest extends TestCase {
+public class OAuthClientTest extends TestCase {
     @Rule
     public final EnvironmentVariables environmentVariables
             = new EnvironmentVariables();
 
-    public LoginTest(String testName) {
+    public OAuthClientTest(String testName) {
         super(testName);
     }
 
@@ -29,7 +29,7 @@ public class LoginTest extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite(LoginTest.class);
+        return new TestSuite(OAuthClientTest.class);
     }
 
     /**

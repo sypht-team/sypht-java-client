@@ -4,9 +4,9 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -18,18 +18,17 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Connect to Sypht to upload files and retrieve results.
+ * Connect to Sypht to upload files and retrieve result.
  */
 public class SyphtClient {
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";
     protected CloseableHttpClient httpClient;
-    protected ResponseHandler<String> responseHandler;
+    protected ResponseHandler<String> jsonSuccessResponseHandler;
     protected String bearerToken;
 
-    public SyphtClient(String bearerToken) {
-        this.bearerToken=bearerToken;
+    public SyphtClient() {
         this.httpClient = HttpClients.createDefault();
-        this.responseHandler = new ResponseHandler<String>() {
+        this.jsonSuccessResponseHandler = new ResponseHandler<String>() {
             @Override
             public String handleResponse(
                     final HttpResponse response) throws ClientProtocolException, IOException {
@@ -45,10 +44,15 @@ public class SyphtClient {
         };
     }
 
+    public SyphtClient(String bearerToken) {
+        this();
+        this.bearerToken=bearerToken;
+    }
+
     public String upload(File file) throws IOException, ClientProtocolException {
         HttpPost httpPost = new HttpPost(SYPHT_API_ENDPOINT+"/fileupload/");
         httpPost.setHeader("Accepts", "application/json");
-        httpPost.setHeader("Authorization", "Bearer " + bearerToken);
+        httpPost.setHeader("Authorization", "Bearer " + getBearerToken());
 
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -58,9 +62,31 @@ public class SyphtClient {
         httpPost.setEntity(entity);
         HttpResponse response = httpClient.execute(httpPost);
 
-        String responseBody = httpClient.execute(httpPost, this.responseHandler);
+        String responseBody = httpClient.execute(httpPost, this.jsonSuccessResponseHandler);
         JSONObject obj = new JSONObject(responseBody);
         return obj.getString("fileId");
+    }
+
+    protected String getBearerToken() {
+        if(this.bearerToken==null) {
+            try {
+                this.bearerToken = new OAuthClient().login();
+                return this.bearerToken;
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        } else {
+            return this.bearerToken;
+        }
+    }
+
+    public JSONObject result(String fileId) throws IOException {
+        HttpGet httpGet = new HttpGet(SYPHT_API_ENDPOINT+"/result/final/" + fileId);
+        httpGet.setHeader("Accepts", "application/json");
+        httpGet.setHeader("Content-Type", "application/json");
+        httpGet.setHeader("Authorization", "Bearer " + getBearerToken());
+        return new JSONObject(httpClient.execute(httpGet, this.jsonSuccessResponseHandler));
     }
 
     @Override
