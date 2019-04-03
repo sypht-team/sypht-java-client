@@ -22,9 +22,26 @@ public class OAuthClient {
     protected static String SYPHT_AUTH_ENDPOINT = "https://login.sypht.com/oauth/token";
     protected CloseableHttpClient httpClient;
     protected String authToken;
+    protected ResponseHandler<String> responseHandler;
 
     public OAuthClient() {
         this.httpClient = HttpClients.createDefault();
+        this.responseHandler = new ResponseHandler<String>() {
+            @Override
+            public String handleResponse(
+                    final HttpResponse response) throws ClientProtocolException, IOException {
+                int status = response.getStatusLine().getStatusCode();
+                if (status >= 200 && status < 300) {
+                    HttpEntity entity = response.getEntity();
+                    String responseBody = entity != null ? EntityUtils.toString(entity) : null;
+                    JSONObject obj = new JSONObject(responseBody);
+                    authToken = obj.getString("access_token");
+                } else {
+                    throw new ClientProtocolException("Unexpected response status: " + status);
+                }
+                return authToken;
+            }
+        };
     }
 
     public String login() throws IOException {
@@ -40,27 +57,7 @@ public class OAuthClient {
                 "}";
         StringEntity entity = new StringEntity(json);
         httpPost.setEntity(entity);
-
-
-        // Create a custom response handler
-        ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-            @Override
-            public String handleResponse(
-                    final HttpResponse response) throws ClientProtocolException, IOException {
-                int status = response.getStatusLine().getStatusCode();
-                if (status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-                    String responseBody = entity != null ? EntityUtils.toString(entity) : null;
-                    JSONObject obj = new JSONObject(responseBody);
-                    authToken = obj.getString("access_token");
-                } else {
-                    throw new ClientProtocolException("Unexpected response status: " + status);
-                }
-                return authToken;
-            }
-
-        };
-        httpClient.execute(httpPost, responseHandler);
+        httpClient.execute(httpPost, this.responseHandler);
         return authToken;
     }
 }

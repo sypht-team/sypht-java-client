@@ -3,6 +3,8 @@ package com.sypht;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.Rule;
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
 import java.io.IOException;
 
@@ -10,10 +12,17 @@ import java.io.IOException;
  * Unit test for simple App.
  */
 public class LoginTest extends TestCase {
-
+    @Rule
+    public final EnvironmentVariables environmentVariables
+            = new EnvironmentVariables();
 
     public LoginTest(String testName) {
         super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        environmentVariables.set("OAUTH_AUDIENCE", "https://api.sypht.com");
     }
 
     /**
