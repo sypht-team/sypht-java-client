@@ -35,11 +35,10 @@ public class OAuthClient {
                     HttpEntity entity = response.getEntity();
                     String responseBody = entity != null ? EntityUtils.toString(entity) : null;
                     JSONObject obj = new JSONObject(responseBody);
-                    authToken = obj.getString("access_token");
+                    return obj.getString("access_token");
                 } else {
                     throw new ClientProtocolException("Unexpected response status: " + status);
                 }
-                return authToken;
             }
         };
     }
@@ -57,8 +56,7 @@ public class OAuthClient {
                 "}";
         StringEntity entity = new StringEntity(json);
         httpPost.setEntity(entity);
-        httpClient.execute(httpPost, this.responseHandler);
-        return authToken;
+        return httpClient.execute(httpPost, this.responseHandler);
     }
 
     @Override
