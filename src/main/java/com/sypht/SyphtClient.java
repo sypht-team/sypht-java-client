@@ -20,27 +20,14 @@ import java.io.IOException;
 /**
  * Connect to Sypht to upload files and retrieve result.
  */
-public class SyphtClient extends com.sypht.CloseableHttpClient {
+public class SyphtClient extends JsonResponseHandlerHttpClient {
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";
-    protected ResponseHandler<String> jsonSuccessResponseHandler;
     protected String bearerToken;
+    protected OAuthClient oauthClient;
 
     public SyphtClient() {
         super();
-        this.jsonSuccessResponseHandler = new ResponseHandler<String>() {
-            @Override
-            public String handleResponse(
-                    final HttpResponse response) throws ClientProtocolException, IOException {
-                int status = response.getStatusLine().getStatusCode();
-                if (status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-                    return entity != null ? EntityUtils.toString(entity) : null;
-                } else {
-                    System.out.println(response);
-                    throw new ClientProtocolException("Unexpected response status: " + status);
-                }
-            }
-        };
+        oauthClient = new OAuthClient();
     }
 
     public SyphtClient(String bearerToken) {
@@ -59,17 +46,15 @@ public class SyphtClient extends com.sypht.CloseableHttpClient {
 
         HttpEntity entity = builder.build();
         httpPost.setEntity(entity);
-        HttpResponse response = super.httpClient.execute(httpPost);
 
-        String responseBody = super.httpClient.execute(httpPost, this.jsonSuccessResponseHandler);
-        JSONObject obj = new JSONObject(responseBody);
+        JSONObject obj = this.execute(httpPost);
         return obj.getString("fileId");
     }
 
     protected String getBearerToken() {
         if(this.bearerToken==null) {
             try {
-                this.bearerToken = new OAuthClient().login();
+                this.bearerToken = oauthClient.login();
                 return this.bearerToken;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -85,6 +70,6 @@ public class SyphtClient extends com.sypht.CloseableHttpClient {
         httpGet.setHeader("Accepts", "application/json");
         httpGet.setHeader("Content-Type", "application/json");
         httpGet.setHeader("Authorization", "Bearer " + getBearerToken());
-        return new JSONObject(httpClient.execute(httpGet, this.jsonSuccessResponseHandler));
+        return new JSONObject(httpClient.execute(httpGet, this.responseHandler));
     }
 }
