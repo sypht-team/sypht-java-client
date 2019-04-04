@@ -7,9 +7,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Unit test for simple App.
+ * Unit test for Sypht HTTP Client.
  */
 public class SyphtClientTest extends TestCase {
 
@@ -25,19 +27,33 @@ public class SyphtClientTest extends TestCase {
     }
 
     /**
-     * Test the OAuth Login
+     * Make a simple prediction
      */
     public void testPredictionWithPDF() throws IOException {
         SyphtClient client = new SyphtClient();
         String uuid = client.upload(getTestFile());
         JSONObject prediction = client.result(uuid);
 
-        assert(prediction!=null);
+        assertEquals(((JSONObject)prediction.get("results")).get("numPages"), "1");
         System.out.println(prediction);
-
     }
 
-    private File getTestFile() {
+    /**
+     * Prediction, this time with custom fieldset
+     */
+    public void testPredictionWithPDFAndCustomFieldset() throws IOException {
+        SyphtClient client = new SyphtClient();
+        Map<String, String> options = new HashMap<>();
+        options.put("fieldSet", "invoice");
+        String uuid = client.upload(getTestFile(), options);
+        JSONObject prediction = client.result(uuid);
+
+        assertEquals(((JSONObject)prediction.get("results")).get("numPages"), "1");
+        System.out.println(prediction);
+    }
+
+
+    protected File getTestFile() {
         ClassLoader classLoader = getClass().getClassLoader();
         return new File(classLoader.getResource("receipt.pdf").getFile());
     }
