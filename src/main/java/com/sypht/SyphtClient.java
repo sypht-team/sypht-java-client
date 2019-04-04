@@ -51,9 +51,9 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
         return this.execute(httpPost).getString("fileId");
     }
 
-    public JSONObject result(String fileId) throws IOException {
+    public String result(String fileId) throws IOException {
         HttpGet httpGet = createAuthorizedGet("/result/final/" + fileId);
-        return new JSONObject(httpClient.execute(httpGet, this.responseHandler));
+        return httpClient.execute(httpGet, this.responseHandler);
     }
 
     protected MultipartEntityBuilder getMultipartEntityBuilderWithFile(File file) {

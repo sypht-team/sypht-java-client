@@ -32,9 +32,9 @@ public class SyphtClientTest extends TestCase {
     public void testPredictionWithPDF() throws IOException {
         SyphtClient client = new SyphtClient();
         String uuid = client.upload(getTestFile());
-        JSONObject prediction = client.result(uuid);
+        String prediction = client.result(uuid);
 
-        assertEquals(((JSONObject)prediction.get("results")).get("numPages"), "1");
+        assert(prediction.contains("results"));
         System.out.println(prediction);
     }
 
@@ -46,9 +46,9 @@ public class SyphtClientTest extends TestCase {
         Map<String, String> options = new HashMap<>();
         options.put("fieldSet", "invoice");
         String uuid = client.upload(getTestFile(), options);
-        JSONObject prediction = client.result(uuid);
+        String prediction = client.result(uuid);
 
-        assertEquals(((JSONObject)prediction.get("results")).get("numPages"), "1");
+        assert(prediction.contains("invoice.total"));
         System.out.println(prediction);
     }
 
