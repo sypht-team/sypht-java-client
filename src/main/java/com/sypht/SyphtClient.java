@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Connect to Sypht to upload files and retrieve result.
+ * Connect to the Sypht API at https://api.sypht.com
  */
 public class SyphtClient extends JsonResponseHandlerHttpClient {
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";

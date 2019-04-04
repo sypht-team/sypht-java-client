@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * Hello world!
+ * Log-in to the Sypht API with this client, then cache the resulting Bearer token
  */
 public class OAuthClient extends JsonResponseHandlerHttpClient {
     protected static String SYPHT_AUTH_ENDPOINT = "https://login.sypht.com/oauth/token";
@@ -32,10 +32,6 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
     }
 
     public String login() throws IOException {
-        HttpPost httpPost = new HttpPost(SYPHT_AUTH_ENDPOINT);
-        httpPost.setHeader("Accepts", "application/json");
-        httpPost.setHeader("Content-Type", "application/json");
-
         String json = "{" +
                 "\"client_id\":\"" + clientId + "\"," +
                 "\"client_secret\":\"" + clientSecret + "\"," +
@@ -43,6 +39,10 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
                 "\"grant_type\":\"client_credentials\"" +
                 "}";
         StringEntity entity = new StringEntity(json);
+
+        HttpPost httpPost = new HttpPost(SYPHT_AUTH_ENDPOINT);
+        httpPost.setHeader("Accepts", "application/json");
+        httpPost.setHeader("Content-Type", "application/json");
         httpPost.setEntity(entity);
 
         JSONObject obj = this.execute(httpPost);
