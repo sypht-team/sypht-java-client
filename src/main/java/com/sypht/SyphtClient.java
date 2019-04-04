@@ -1,21 +1,16 @@
 package com.sypht;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Connect to Sypht to upload files and retrieve result.
@@ -32,27 +27,59 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
 
     public SyphtClient(String bearerToken) {
         this();
-        this.bearerToken=bearerToken;
+        this.bearerToken = bearerToken;
     }
 
-    public String upload(File file) throws IOException, ClientProtocolException {
-        HttpPost httpPost = new HttpPost(SYPHT_API_ENDPOINT+"/fileupload/");
-        httpPost.setHeader("Accepts", "application/json");
-        httpPost.setHeader("Authorization", "Bearer " + getBearerToken());
+    public String upload(File file) throws IOException {
+        HttpPost httpPost = createAuthorizedPost("/fileupload");
+        httpPost.setEntity(getMultipartEntityBuilderWithFile(file).build());
+        return this.execute(httpPost).getString("fileId");
+    }
 
+    public String upload(File file, Map<String, String> options) throws IOException {
+        MultipartEntityBuilder builder = getMultipartEntityBuilderWithFile(file);
+
+        Iterator it = options.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, String> pair = (Map.Entry) it.next();
+            builder.addTextBody(pair.getKey(), pair.getValue());
+            it.remove();
+        }
+
+        HttpPost httpPost = createAuthorizedPost("/fileupload");
+        httpPost.setEntity(builder.build());
+        return this.execute(httpPost).getString("fileId");
+    }
+
+    public JSONObject result(String fileId) throws IOException {
+        HttpGet httpGet = createAuthorizedGet("/result/final/" + fileId);
+        return new JSONObject(httpClient.execute(httpGet, this.responseHandler));
+    }
+
+    protected MultipartEntityBuilder getMultipartEntityBuilderWithFile(File file) {
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         builder.addBinaryBody("fileToUpload", file, ContentType.APPLICATION_FORM_URLENCODED, file.getName());
+        return builder;
+    }
 
-        HttpEntity entity = builder.build();
-        httpPost.setEntity(entity);
+    protected HttpGet createAuthorizedGet(String slug) {
+        HttpGet httpGet = new HttpGet(SYPHT_API_ENDPOINT + slug);
+        httpGet.setHeader("Accepts", "application/json");
+        httpGet.setHeader("Content-Type", "application/json");
+        httpGet.setHeader("Authorization", "Bearer " + getBearerToken());
+        return httpGet;
+    }
 
-        JSONObject obj = this.execute(httpPost);
-        return obj.getString("fileId");
+    protected HttpPost createAuthorizedPost(String slug) {
+        HttpPost httpPost = new HttpPost(SYPHT_API_ENDPOINT + slug);
+        httpPost.setHeader("Accepts", "application/json");
+        httpPost.setHeader("Authorization", "Bearer " + getBearerToken());
+        return httpPost;
     }
 
     protected String getBearerToken() {
-        if(this.bearerToken==null) {
+        if (this.bearerToken == null) {
             try {
                 this.bearerToken = oauthClient.login();
                 return this.bearerToken;
@@ -63,13 +90,5 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
         } else {
             return this.bearerToken;
         }
-    }
-
-    public JSONObject result(String fileId) throws IOException {
-        HttpGet httpGet = new HttpGet(SYPHT_API_ENDPOINT+"/result/final/" + fileId);
-        httpGet.setHeader("Accepts", "application/json");
-        httpGet.setHeader("Content-Type", "application/json");
-        httpGet.setHeader("Authorization", "Bearer " + getBearerToken());
-        return new JSONObject(httpClient.execute(httpGet, this.responseHandler));
     }
 }
