@@ -9,7 +9,7 @@ Checkout [sypht.com](https://sypht.com) for more details.
 ### API
 
 Sypht provides a REST api for interaction with the service. Full documentation is available at: [docs.sypht.com](https://docs.sypht.com/).
-This repository is an open-source python reference client implementation for working with the API.
+This repository is an open-source Java reference client implementation for working with the API.
 
 ### Getting started
 
