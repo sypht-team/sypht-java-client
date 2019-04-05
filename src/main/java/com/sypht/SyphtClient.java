@@ -8,14 +8,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Connect to the Sypht API at https://api.sypht.com
@@ -23,8 +23,7 @@ import java.util.Map;
 public class SyphtClient extends JsonResponseHandlerHttpClient {
     protected static int OAUTH_GRACE_PERIOD = 1000 * 60 * 15;
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";
-    protected static org.apache.log4j.Logger log =
-            Logger.getLogger(SyphtClient.class);
+    protected static Logger log = Logger.getLogger("com.sypht.SyphtClient");
     protected String bearerToken;
     protected OAuthClient oauthClient;
 
@@ -62,14 +61,14 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
         return fileId;
     }
 
-    public String result(String fileId, Map<String, String>...options) throws IOException {
+    public String result(String fileId, Map<String, String>... options) throws IOException {
         HttpGet httpGet = createAuthorizedGet("/result/final/" + fileId);
         try {
             String result = httpClient.execute(httpGet, this.responseHandler);
             log.info("sypht results successfully fetched for fileId " + fileId);
             return result;
         } catch (Exception e) {
-            log.error("error trying to get Sypht results for fileId " + fileId);
+            log.log(Level.SEVERE, "error trying to get Sypht results for fileId " + fileId);
             throw new RuntimeException(e);
         }
     }

@@ -5,12 +5,15 @@ import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Log-in to the Sypht API with this client, then cache the resulting Bearer token
  */
 public class OAuthClient extends JsonResponseHandlerHttpClient {
     protected static String SYPHT_AUTH_ENDPOINT = "https://login.sypht.com/oauth/token";
+    protected static Logger log = Logger.getLogger("com.sypht.OAuthClient");
+
     protected String clientId;
     protected String clientSecret;
     protected String oauthAudience;
@@ -45,6 +48,7 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
         httpPost.setEntity(entity);
 
         JSONObject jsonResponse = this.execute(httpPost);
+        log.info("successfully logged into Sypht for clientId " + clientId);
         return jsonResponse.getString("access_token");
     }
 }

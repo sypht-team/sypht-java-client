@@ -27,7 +27,7 @@ public class SyphtClientTest extends TestCase {
     }
 
     /**
-     * Make a simple prediction
+     * Test the bearer token can be cached. No special assertions here, just passing predictions
      */
     public void testPredictionWithCachedToken() throws IOException {
         SyphtClient client = new SyphtClient();
@@ -50,7 +50,7 @@ public class SyphtClientTest extends TestCase {
     }
 
     /**
-     * Prediction, this time with custom fieldset
+     * Test prediction, this time with custom fieldset
      */
     public void testPredictionWithPDFAndCustomFieldset() throws IOException {
         SyphtClient client = new SyphtClient();
