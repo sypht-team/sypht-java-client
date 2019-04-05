@@ -29,10 +29,13 @@ public class SyphtClientTest extends TestCase {
     /**
      * Make a simple prediction
      */
-    public void testPredictionWithPDF() throws IOException {
+    public void testPredictionWithCachedToken() throws IOException {
         SyphtClient client = new SyphtClient();
         String uuid = client.upload(getTestFile());
         String prediction = client.result(uuid);
+
+        //2nd attempt should use cached token
+        prediction = client.result(uuid);
 
         assert(prediction.contains("results"));
         System.out.println(prediction);

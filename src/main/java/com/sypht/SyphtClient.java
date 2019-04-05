@@ -1,14 +1,19 @@
 package com.sypht;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -16,7 +21,10 @@ import java.util.Map;
  * Connect to the Sypht API at https://api.sypht.com
  */
 public class SyphtClient extends JsonResponseHandlerHttpClient {
+    protected static final int OAUTH_GRACE_PERIOD = 1000 * 60 * 15;
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";
+    protected static org.apache.log4j.Logger log =
+            Logger.getLogger(SyphtClient.class);
     protected String bearerToken;
     protected OAuthClient oauthClient;
 
@@ -48,12 +56,22 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
 
         HttpPost httpPost = createAuthorizedPost("/fileupload");
         httpPost.setEntity(builder.build());
-        return this.execute(httpPost).getString("fileId");
+        String fileId = this.execute(httpPost).getString("fileId");
+
+        log.info("sypht file upload successful, fileId " + fileId + " for file " + file.getName());
+        return fileId;
     }
 
-    public String result(String fileId) throws IOException {
+    public String result(String fileId, Map<String, String>...options) throws IOException {
         HttpGet httpGet = createAuthorizedGet("/result/final/" + fileId);
-        return httpClient.execute(httpGet, this.responseHandler);
+        try {
+            String result = httpClient.execute(httpGet, this.responseHandler);
+            log.info("sypht results successfully fetched for fileId " + fileId);
+            return result;
+        } catch (Exception e) {
+            log.error("error trying to get Sypht results for fileId " + fileId);
+            throw new RuntimeException(e);
+        }
     }
 
     protected MultipartEntityBuilder getMultipartEntityBuilderWithFile(File file) {
@@ -82,13 +100,36 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
         if (this.bearerToken == null) {
             try {
                 this.bearerToken = oauthClient.login();
-                return this.bearerToken;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
         } else {
-            return this.bearerToken;
+            long cacheExpiry = cacheExpiry(decodeTokenClaims(this.bearerToken));
+            if (cacheExpiry <= new Date().getTime()) {
+                this.bearerToken = null;
+                try {
+                    this.bearerToken = oauthClient.login();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
         }
+        return this.bearerToken;
+    }
+
+
+    protected long cacheExpiry(Claims claims) {
+        return claims.getExpiration().getTime() - OAUTH_GRACE_PERIOD;
+    }
+
+    protected Claims decodeTokenClaims(String token) {
+        String[] splitToken = token.split("\\.");
+        String unsignedToken = splitToken[0] + "." + splitToken[1] + ".";
+
+        Jwt<?, ?> jwt = Jwts.parser().parse(unsignedToken);
+        Claims claims = (Claims) jwt.getBody();
+        return claims;
     }
 }

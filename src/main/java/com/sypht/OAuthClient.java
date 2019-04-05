@@ -1,6 +1,5 @@
 package com.sypht;
 
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
@@ -16,26 +15,26 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
     protected String clientSecret;
     protected String oauthAudience;
 
+
     public OAuthClient() {
         super();
         clientId = System.getenv("OAUTH_CLIENT_ID");
         clientSecret = System.getenv("OAUTH_CLIENT_SECRET");
-        if(clientId == null || clientSecret == null) {
+        if (clientId == null || clientSecret == null) {
             throw new RuntimeException("OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET environment" +
                     " variables must be set before running this process, exiting");
         }
         oauthAudience = System.getenv("OAUTH_AUDIENCE");
-        if(oauthAudience==null) {
+        if (oauthAudience == null) {
             oauthAudience = "https://api.sypht.com";
         }
-
     }
 
     public String login() throws IOException {
         String json = "{" +
                 "\"client_id\":\"" + clientId + "\"," +
                 "\"client_secret\":\"" + clientSecret + "\"," +
-                "\"audience\":\"" +  oauthAudience + "\"," +
+                "\"audience\":\"" + oauthAudience + "\"," +
                 "\"grant_type\":\"client_credentials\"" +
                 "}";
         StringEntity entity = new StringEntity(json);
@@ -45,8 +44,7 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
         httpPost.setHeader("Content-Type", "application/json");
         httpPost.setEntity(entity);
 
-        JSONObject obj = this.execute(httpPost);
-
-        return obj.getString("access_token");
+        JSONObject jsonResponse = this.execute(httpPost);
+        return jsonResponse.getString("access_token");
     }
 }
