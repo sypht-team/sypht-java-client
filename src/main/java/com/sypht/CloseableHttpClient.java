@@ -3,10 +3,7 @@
  */
 package com.sypht;
 
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.impl.client.HttpClients;
-
-import java.io.IOException;
 
 /**
  * @author Simon Mittag

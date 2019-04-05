@@ -27,25 +27,49 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
     protected String bearerToken;
     protected OAuthClient oauthClient;
 
-
+    /**
+     * Create a default Sypht client that manages bearer tokens automatically.
+     */
     public SyphtClient() {
         super();
         oauthClient = new OAuthClient();
     }
 
+    /**
+     * Create a custom Sypht client with your own bearer token.
+     *
+     * @param bearerToken the Jwt token
+     */
     public SyphtClient(String bearerToken) {
         this();
         this.bearerToken = bearerToken;
     }
 
+    /**
+     * Pass a file to Sypht for detection.
+     *
+     * @param file the file in pdf, jpeg, gif or png format. Files may be up to
+     *             20MB in size and pdf files may contain up to 16 individual pages.
+     * @return a fileId as a String
+     * @throws IOException in the event the upload went wrong.
+     */
     public String upload(File file) throws IOException {
         return this.upload(file, null);
     }
 
+    /**
+     * Pass a file to Sypht for detection.
+     *
+     * @param file    the file in pdf, jpeg, gif or png format. Files may be up to
+     *                20MB in size and pdf files may contain up to 16 individual pages.
+     * @param options pass in custom upload options here.
+     * @return a fileId as a String
+     * @throws IOException in the event the upload went wrong.
+     */
     public String upload(File file, Map<String, String> options) throws IOException {
         MultipartEntityBuilder builder = getMultipartEntityBuilderWithFile(file);
 
-        if(options!=null) {
+        if (options != null) {
             Iterator it = options.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, String> pair = (Map.Entry) it.next();
@@ -62,7 +86,13 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
         return fileId;
     }
 
-    public String result(String fileId, Map<String, String>... options) throws IOException {
+    /**
+     * Fetch prediction results from Sypht
+     *
+     * @param fileId the fileId
+     * @return prediction results in JSON format.
+     */
+    public String result(String fileId) {
         HttpGet httpGet = createAuthorizedGet("/result/final/" + fileId);
         try {
             String result = httpClient.execute(httpGet, this.responseHandler);

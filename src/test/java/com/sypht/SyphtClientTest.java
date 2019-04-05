@@ -3,7 +3,6 @@ package com.sypht;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class SyphtClientTest extends TestCase {
         prediction = client.result(uuid);
         System.out.println(prediction);
 
-        assert(prediction.contains("results"));
+        assert (prediction.contains("results"));
         System.out.println(prediction);
     }
 
@@ -59,7 +58,7 @@ public class SyphtClientTest extends TestCase {
         String uuid = client.upload(getTestFile(), options);
         String prediction = client.result(uuid);
 
-        assert(prediction.contains("invoice.total"));
+        assert (prediction.contains("invoice.total"));
         System.out.println(prediction);
     }
 

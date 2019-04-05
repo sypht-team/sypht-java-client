@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * Log-in to the Sypht API with this client, then cache the resulting Bearer token
+ * Log-in to the Sypht API
  */
 public class OAuthClient extends JsonResponseHandlerHttpClient {
     protected static String SYPHT_AUTH_ENDPOINT = "https://login.sypht.com/oauth/token";
@@ -19,6 +19,10 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
     protected String oauthAudience;
 
 
+    /**
+     * Create a default OAuthClient. Requires OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
+     * set as environment variables.
+     */
     public OAuthClient() {
         super();
         clientId = System.getenv("OAUTH_CLIENT_ID");
@@ -33,6 +37,13 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
         }
     }
 
+    /**
+     * Get a JWT bearer token for use with the Sypht API in exchange for your
+     * client id and secret.
+     *
+     * @return a bearer token as a String
+     * @throws IOException when the client can't log-in to Sypht.
+     */
     public String login() throws IOException {
         String json = "{" +
                 "\"client_id\":\"" + clientId + "\"," +
