@@ -14,14 +14,22 @@ This repository is an open-source python reference client implementation for wor
 ### Getting started
 
 To get started you'll need some API credentials, i.e. a `client_id` and `client_secret`.
-Register for an account at https://www.sypht.com/signup/developer to generate these first.
+You need to register for an account at https://www.sypht.com/signup/developer to generate these first.
+
+
+### Prerequisites
+JDK8 and upwards are supported.
+
 
 ### Installation
-
-Latest version is available on maven central:
+Sypht Java Client is available on maven central:
 
 ```
-TBD
+<dependency>
+  <groupId>com.sypht</groupId>
+  <artifactId>sypht-java-client</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
 ```
 
 ### Usage
