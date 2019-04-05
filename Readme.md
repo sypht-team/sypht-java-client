@@ -33,6 +33,13 @@ Sypht Java Client is available on maven central:
 ```
 
 ### Usage
+Populate these system environment variables with the credentials generated above:
+
+```
+OAUTH_CLIENT_ID="your client id"
+OAUTH_CLIENT_SECRET="your client secret"
+```
+
 
 ```Java
 SyphtClient client = new SyphtClient();
