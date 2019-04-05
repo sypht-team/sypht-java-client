@@ -40,7 +40,7 @@ OAUTH_CLIENT_ID="your client id"
 OAUTH_CLIENT_SECRET="your client secret"
 ```
 
-
+then invoke the client with a file of your choice:
 ```Java
 SyphtClient client = new SyphtClient();
 String uuid = client.upload(new File("mytaxireceipt.pdf"));
