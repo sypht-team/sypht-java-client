@@ -36,8 +36,8 @@ Sypht Java Client is available on maven central:
 Populate these system environment variables with the credentials generated above:
 
 ```
-OAUTH_CLIENT_ID="your client id"
-OAUTH_CLIENT_SECRET="your client secret"
+OAUTH_CLIENT_ID="client_id"
+OAUTH_CLIENT_SECRET="client_secret"
 ```
 
 then invoke the client with a file of your choice:
