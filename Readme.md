@@ -4,12 +4,12 @@ Sypht is an service which extracts key fields from documents. For example, you c
 
 Pixels in, json out.
 
-Checkout [sypht.com](https://sypht.com) for more details.
+Check out [sypht.com](https://sypht.com) for more details.
 
 ### API
 
 Sypht provides a REST api for interaction with the service. Full documentation is available at: [docs.sypht.com](https://docs.sypht.com/).
-This repository is an open-source Java reference client implementation for working with the API.
+This repository is an Apache licensed Java reference client implementation for working with the API.
 
 ### Getting started
 
