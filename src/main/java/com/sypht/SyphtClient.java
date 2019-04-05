@@ -27,6 +27,7 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
     protected String bearerToken;
     protected OAuthClient oauthClient;
 
+
     public SyphtClient() {
         super();
         oauthClient = new OAuthClient();
@@ -38,19 +39,19 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
     }
 
     public String upload(File file) throws IOException {
-        HttpPost httpPost = createAuthorizedPost("/fileupload");
-        httpPost.setEntity(getMultipartEntityBuilderWithFile(file).build());
-        return this.execute(httpPost).getString("fileId");
+        return this.upload(file, null);
     }
 
     public String upload(File file, Map<String, String> options) throws IOException {
         MultipartEntityBuilder builder = getMultipartEntityBuilderWithFile(file);
 
-        Iterator it = options.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, String> pair = (Map.Entry) it.next();
-            builder.addTextBody(pair.getKey(), pair.getValue());
-            it.remove();
+        if(options!=null) {
+            Iterator it = options.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, String> pair = (Map.Entry) it.next();
+                builder.addTextBody(pair.getKey(), pair.getValue());
+                it.remove();
+            }
         }
 
         HttpPost httpPost = createAuthorizedPost("/fileupload");
