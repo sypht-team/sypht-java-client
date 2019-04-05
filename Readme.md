@@ -28,7 +28,7 @@ Sypht Java Client is available on maven central:
 <dependency>
   <groupId>com.sypht</groupId>
   <artifactId>sypht-java-client</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
 </dependency>
 ```
 
