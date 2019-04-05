@@ -36,6 +36,14 @@ public class SyphtClientTest extends TestCase {
 
         //2nd attempt should use cached token
         prediction = client.result(uuid);
+        System.out.println(prediction);
+
+        //this will force expiry of the cached token
+        client.OAUTH_GRACE_PERIOD = 1000 * 60 * 60 * 24;
+
+        //3rd attempt should force token refresh.
+        prediction = client.result(uuid);
+        System.out.println(prediction);
 
         assert(prediction.contains("results"));
         System.out.println(prediction);

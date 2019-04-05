@@ -21,7 +21,7 @@ import java.util.Map;
  * Connect to the Sypht API at https://api.sypht.com
  */
 public class SyphtClient extends JsonResponseHandlerHttpClient {
-    protected static final int OAUTH_GRACE_PERIOD = 1000 * 60 * 15;
+    protected static int OAUTH_GRACE_PERIOD = 1000 * 60 * 15;
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";
     protected static org.apache.log4j.Logger log =
             Logger.getLogger(SyphtClient.class);
@@ -96,7 +96,7 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
         return httpPost;
     }
 
-    protected String getBearerToken() {
+    protected synchronized String getBearerToken() {
         if (this.bearerToken == null) {
             try {
                 this.bearerToken = oauthClient.login();
