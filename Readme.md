@@ -24,7 +24,7 @@ JDK8 and upwards are supported.
 ### Installation
 Sypht Java Client is available on maven central:
 
-```
+```Xml
 <dependency>
   <groupId>com.sypht</groupId>
   <artifactId>sypht-java-client</artifactId>
@@ -35,7 +35,7 @@ Sypht Java Client is available on maven central:
 ### Usage
 Populate these system environment variables with the credentials generated above:
 
-```
+```Bash
 OAUTH_CLIENT_ID="client_id"
 OAUTH_CLIENT_SECRET="client_secret"
 ```
