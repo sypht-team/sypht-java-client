@@ -3,7 +3,10 @@
  */
 package com.sypht;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 /**
  * @author Simon Mittag
@@ -12,7 +15,13 @@ public abstract class CloseableHttpClient {
     protected org.apache.http.impl.client.CloseableHttpClient httpClient;
 
     public CloseableHttpClient() {
-        this.httpClient = HttpClients.createDefault();
+
+        HttpClientConnectionManager poolingConnManager
+                = new PoolingHttpClientConnectionManager();
+        this.httpClient = HttpClients
+                .custom()
+                .setConnectionManager(poolingConnManager)
+                .build();
     }
 
     @Override
