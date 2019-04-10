@@ -11,6 +11,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -58,6 +59,19 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
     }
 
     /**
+     * Pass an inputStream to Sypht for detection.
+     *
+     * @param fileName the file name
+     * @param inputStream    binary input stream of pdf, jpeg, gif or png format. Files may be up to
+     *             20MB in size and pdf files may contain up to 16 individual pages.
+     * @return a fileId as a String
+     * @throws IOException in the event the upload went wrong.
+     */
+    public String upload(String fileName, InputStream inputStream) throws IOException {
+        return this.upload(fileName, inputStream, null);
+    }
+
+    /**
      * Pass a file to Sypht for detection.
      *
      * @param file    the file in pdf, jpeg, gif or png format. Files may be up to
@@ -68,22 +82,24 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
      */
     public String upload(File file, Map<String, String> options) throws IOException {
         MultipartEntityBuilder builder = getMultipartEntityBuilderWithFile(file);
+        parseOptions(options, builder);
+        return performUpload(builder);
+    }
 
-        if (options != null) {
-            Iterator it = options.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<String, String> pair = (Map.Entry) it.next();
-                builder.addTextBody(pair.getKey(), pair.getValue());
-                it.remove();
-            }
-        }
-
-        HttpPost httpPost = createAuthorizedPost("/fileupload");
-        httpPost.setEntity(builder.build());
-        String fileId = this.execute(httpPost).getString("fileId");
-
-        log.info("sypht file upload successful, fileId " + fileId + " for file " + file.getName());
-        return fileId;
+    /**
+     * Pass an inputStream to Sypht for detection.
+     *
+     * @param fileName the file name
+     * @param inputStream    binary input stream of pdf, jpeg, gif or png format. Files may be up to
+     *                20MB in size and pdf files may contain up to 16 individual pages.
+     * @param options pass in custom upload options here.
+     * @return a fileId as a String
+     * @throws IOException in the event the upload went wrong.
+     */
+    public String upload(String fileName, InputStream inputStream, Map<String, String> options) throws IOException {
+        MultipartEntityBuilder builder = getMultipartEntityBuilderWithInputStream(inputStream, fileName);
+        parseOptions(options, builder);
+        return performUpload(builder);
     }
 
     /**
@@ -104,10 +120,37 @@ public class SyphtClient extends JsonResponseHandlerHttpClient {
         }
     }
 
+    protected String performUpload(MultipartEntityBuilder builder) throws IOException {
+        HttpPost httpPost = createAuthorizedPost("/fileupload");
+        httpPost.setEntity(builder.build());
+        String fileId = this.execute(httpPost).getString("fileId");
+
+        log.info("sypht file upload successful, fileId " + fileId);
+        return fileId;
+    }
+
+    protected void parseOptions(Map<String, String> options, MultipartEntityBuilder builder) {
+        if (options != null) {
+            Iterator it = options.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, String> pair = (Map.Entry) it.next();
+                builder.addTextBody(pair.getKey(), pair.getValue());
+                it.remove();
+            }
+        }
+    }
+
     protected MultipartEntityBuilder getMultipartEntityBuilderWithFile(File file) {
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         builder.addBinaryBody("fileToUpload", file, ContentType.APPLICATION_FORM_URLENCODED, file.getName());
+        return builder;
+    }
+
+    protected MultipartEntityBuilder getMultipartEntityBuilderWithInputStream(InputStream inputStream, String fileName) {
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        builder.addBinaryBody("fileToUpload", inputStream, ContentType.APPLICATION_FORM_URLENCODED, fileName);
         return builder;
     }
 
