@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +57,20 @@ public class SyphtClientTest extends TestCase {
         Map<String, String> options = new HashMap<>();
         options.put("fieldSet", "invoice");
         String uuid = client.upload(getTestFile(), options);
+        String prediction = client.result(uuid);
+
+        assert (prediction.contains("invoice.total"));
+        System.out.println(prediction);
+    }
+
+    /**
+     * Test prediction, this time with custom fieldset
+     */
+    public void testPredictionWithPDFStreamAndCustomFieldset() throws IOException {
+        SyphtClient client = new SyphtClient();
+        Map<String, String> options = new HashMap<>();
+        options.put("fieldSet", "invoice");
+        String uuid = client.upload("file.pdf", new FileInputStream(getTestFile()), options);
         String prediction = client.result(uuid);
 
         assert (prediction.contains("invoice.total"));
