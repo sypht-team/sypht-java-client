@@ -3,6 +3,7 @@
  */
 package com.sypht;
 
+import org.apache.http.HttpHost;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -17,8 +18,10 @@ public abstract class CloseableHttpClient {
 
         HttpClientConnectionManager poolingConnManager
                 = new PoolingHttpClientConnectionManager();
+        HttpHost proxy = new HttpHost("proxy.bpay.com.au", 9400);
+
         this.httpClient = HttpClients
-                .custom()
+                .custom().setProxy(proxy)
                 .setConnectionManager(poolingConnManager)
                 .build();
     }
