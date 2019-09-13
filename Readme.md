@@ -1,25 +1,17 @@
-## Sypht
+# Sypht Java Client
+This repository is a Java reference client implementation for working with the Sypht API at https://api.sypht.com.
 
-Sypht is an service which extracts key fields from documents. For example, you can upload an image or pdf of a bill or invoice and extract the amount due, due date, invoice number and biller information.
-
-Pixels in, json out.
-
-Check out [sypht.com](https://sypht.com) for more details.
-
-### API
-
-Sypht provides a REST api for interaction with the service. Full documentation is available at: [docs.sypht.com](https://docs.sypht.com/).
-This repository is an Apache licensed Java reference client implementation for working with the API.
+## About Sypht
+[Sypht](https://sypht.com) is a SaaS [API]((https://docs.sypht.com/)) which extracts key fields from documents. For 
+example, you can upload an image or pdf of a bill or invoice and extract the amount due, due date, invoice number 
+and biller information. 
 
 ### Getting started
-
-To get started you'll need some API credentials, i.e. a `client_id` and `client_secret`.
-You need to register for an account at https://www.sypht.com/signup/developer to generate these first.
-
+To get started you'll need API credentials, i.e. a `client_id` and `client_secret`, which can be obtained by registering
+for an [account](https://www.sypht.com/signup/developer)
 
 ### Prerequisites
 JDK8 and upwards are supported.
-
 
 ### Installation
 Sypht Java Client is available on maven central:
