@@ -82,6 +82,23 @@ public class SyphtClientTest extends TestCase {
         System.out.println(prediction);
     }
 
+    /**
+     * Test prediction with http proxy. Validate free proxy server frequently
+     */
+    public void testPredictionWithSocksProxy() throws IOException {
+        System.setProperty("socksHost", "50.62.59.61");
+        System.setProperty("socksPort", "1431");
+
+        SyphtClient client = new SyphtClient();
+        Map<String, String> options = new HashMap<>();
+        options.put("fieldSets", "[\"sypht.invoice\"]");
+        options.put("fileToUpload", "file.pdf");
+        String uuid = client.upload("file.pdf", new FileInputStream(getTestFile()), options);
+        String prediction = client.result(uuid);
+
+        assert (prediction.contains("invoice.total"));
+        System.out.println(prediction);
+    }
 
     protected File getTestFile() {
         ClassLoader classLoader = getClass().getClassLoader();
