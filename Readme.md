@@ -44,5 +44,5 @@ SyphtClient client = new SyphtClient();
 System.out.println(
         client.result(
                 client.upload(
-                        new File("mytaxireceipt.pdf"))));
+                        new File("receipt.pdf"))));
 ```
