@@ -31,7 +31,10 @@ public class SyphtClientTest extends TestCase {
      */
     public void testPredictionWithCachedToken() throws IOException {
         SyphtClient client = new SyphtClient();
-        String uuid = client.upload(getTestFile());
+        Map<String, String> options = new HashMap<>();
+        options.put("fieldSets", "[\"sypht.invoice\"]");
+
+        String uuid = client.upload(getTestFile(), options);
         String prediction = client.result(uuid);
 
         //2nd attempt should use cached token
@@ -55,7 +58,8 @@ public class SyphtClientTest extends TestCase {
     public void testPredictionWithPDFAndCustomFieldset() throws IOException {
         SyphtClient client = new SyphtClient();
         Map<String, String> options = new HashMap<>();
-        options.put("fieldSet", "invoice");
+        options.put("fieldSets", "[\"sypht.invoice\"]");
+        options.put("fileToUpload", "file.pdf");
         String uuid = client.upload(getTestFile(), options);
         String prediction = client.result(uuid);
 
@@ -69,7 +73,8 @@ public class SyphtClientTest extends TestCase {
     public void testPredictionWithPDFStreamAndCustomFieldset() throws IOException {
         SyphtClient client = new SyphtClient();
         Map<String, String> options = new HashMap<>();
-        options.put("fieldSet", "invoice");
+        options.put("fieldSets", "[\"sypht.invoice\"]");
+        options.put("fileToUpload", "file.pdf");
         String uuid = client.upload("file.pdf", new FileInputStream(getTestFile()), options);
         String prediction = client.result(uuid);
 
