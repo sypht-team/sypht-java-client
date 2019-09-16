@@ -7,7 +7,7 @@ example, you can upload an image or pdf of a bill or invoice and extract the amo
 and biller information. 
 
 ### Getting started
-To get started you'll need API credentials, i.e. a `client_id` and `client_secret`, which can be obtained by registering
+To get started you'll need API credentials, i.e. a `<client_id>` and `<client_secret>`, which can be obtained by registering
 for an [account](https://www.sypht.com/signup/developer)
 
 ### Prerequisites
@@ -20,7 +20,7 @@ Sypht Java Client is available on maven central:
 <dependency>
   <groupId>com.sypht</groupId>
   <artifactId>sypht-java-client</artifactId>
-  <version>1.0</version>
+  <version>1.3</version>
 </dependency>
 ```
 
@@ -28,13 +28,21 @@ Sypht Java Client is available on maven central:
 Populate these system environment variables with the credentials generated above:
 
 ```Bash
-OAUTH_CLIENT_ID="client_id"
-OAUTH_CLIENT_SECRET="client_secret"
+SYPHT_API_KEY="<client_id>:<client_secret>"
+```
+
+or
+
+```Bash
+OAUTH_CLIENT_ID="<client_id>"
+OAUTH_CLIENT_SECRET="<client_secret>"
 ```
 
 then invoke the client with a file of your choice:
 ```Java
 SyphtClient client = new SyphtClient();
-String uuid = client.upload(new File("mytaxireceipt.pdf"));
-System.out.println(client.result(uuid));
+System.out.println(
+        client.result(
+                client.upload(
+                        new File("mytaxireceipt.pdf"))));
 ```
