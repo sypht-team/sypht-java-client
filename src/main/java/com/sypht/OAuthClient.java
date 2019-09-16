@@ -25,13 +25,20 @@ public class OAuthClient extends JsonResponseHandlerHttpClient {
      */
     public OAuthClient() {
         super();
-        clientId = System.getenv("OAUTH_CLIENT_ID");
-        clientSecret = System.getenv("OAUTH_CLIENT_SECRET");
+        clientId = PropertyHelper.getEnvOrProperty("OAUTH_CLIENT_ID");
+        clientSecret = PropertyHelper.getEnvOrProperty("OAUTH_CLIENT_SECRET");
+        if (clientId == null && clientSecret == null) {
+            String syphtApiKey = PropertyHelper.getEnvOrProperty("SYPHT_API_KEY");
+            if (syphtApiKey != null) {
+                clientId = syphtApiKey.split(":")[0];
+                clientSecret = syphtApiKey.split(":")[1];
+            }
+        }
         if (clientId == null || clientSecret == null) {
-            throw new RuntimeException("OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET environment" +
+            throw new RuntimeException("SYPHT_API_KEY -OR- OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET environment" +
                     " variables must be set before running this process, exiting");
         }
-        oauthAudience = System.getenv("OAUTH_AUDIENCE");
+        oauthAudience = PropertyHelper.getEnvOrProperty("OAUTH_AUDIENCE");
         if (oauthAudience == null) {
             oauthAudience = "https://api.sypht.com";
         }
