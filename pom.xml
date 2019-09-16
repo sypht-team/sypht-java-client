@@ -4,7 +4,7 @@
   <groupId>com.sypht</groupId>
   <artifactId>sypht-java-client</artifactId>
   <packaging>jar</packaging>
-  <version>1.2</version>
+  <version>1.3</version>
   <description>Sypht is an service which extracts key fields from documents. https://www.sypht.com</description>
   <name>sypht-java-client</name>
   <url>http://maven.apache.org</url>
@@ -157,5 +157,5 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
-  
+
 </project>
