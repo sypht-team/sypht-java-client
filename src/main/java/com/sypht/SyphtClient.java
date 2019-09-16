@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * Connect to the Sypht API at https://api.sypht.com
  */
 public class SyphtClient extends JsonResponseHandlerHttpClient {
-    protected static int OAUTH_GRACE_PERIOD = 1000 * 60 * 15;
+    protected static int OAUTH_GRACE_PERIOD = 1000 * 60 * 10;
     protected static String SYPHT_API_ENDPOINT = "https://api.sypht.com";
     protected static Logger log = Logger.getLogger("com.sypht.SyphtClient");
     protected String bearerToken;
