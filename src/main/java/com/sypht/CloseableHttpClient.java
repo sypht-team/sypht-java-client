@@ -12,6 +12,9 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  * @author Simon Mittag
  */
 public abstract class CloseableHttpClient {
+    protected static final int DEFAULT_HTTP_PROXY_PORT = 80;
+    protected static final int DEFAULT_HTTPS_PROXY_PORT = 443;
+    protected static final int DEFAULT_SOCKS_PROXY_PORT = 1080;
     protected org.apache.http.impl.client.CloseableHttpClient httpClient;
 
     public CloseableHttpClient() {
@@ -37,31 +40,31 @@ public abstract class CloseableHttpClient {
         HttpHost proxy = null;
         String proxyHost = null;
         Integer proxyPort = null;
-        String httpProxyHost = System.getProperty("http.proxyHost");
-        String httpsProxyHost = System.getProperty("https.proxyHost");
-        String socksProxyHost = System.getProperty("socksProxyHost");
+        String httpProxyHost = PropertyHelper.getEnvOrProperty("http.proxyHost");
+        String httpsProxyHost = PropertyHelper.getEnvOrProperty("https.proxyHost");
+        String socksProxyHost = PropertyHelper.getEnvOrProperty("socksProxyHost");
 
         if (httpProxyHost != null) {
             proxyHost = httpProxyHost;
-            String httpProxyPortStr = System.getProperty("http.proxyPort");
+            String httpProxyPortStr = PropertyHelper.getEnvOrProperty("http.proxyPort");
             if (httpProxyPortStr == null) {
-                proxyPort = 80;
+                proxyPort = DEFAULT_HTTP_PROXY_PORT;
             } else {
                 proxyPort = Integer.parseInt(httpProxyPortStr);
             }
         } else if (httpsProxyHost != null) {
             proxyHost = httpsProxyHost;
-            String httpsProxyPortStr = System.getProperty("https.proxyPort");
+            String httpsProxyPortStr = PropertyHelper.getEnvOrProperty("https.proxyPort");
             if (httpsProxyPortStr == null) {
-                proxyPort = 443;
+                proxyPort = DEFAULT_HTTPS_PROXY_PORT;
             } else {
                 proxyPort = Integer.parseInt(httpsProxyPortStr);
             }
         } else if (socksProxyHost != null) {
             proxyHost = socksProxyHost;
-            String socksProxyPortStr = System.getProperty("socksProxyPort");
+            String socksProxyPortStr = PropertyHelper.getEnvOrProperty("socksProxyPort");
             if (socksProxyPortStr == null) {
-                proxyPort = 1080;
+                proxyPort = DEFAULT_SOCKS_PROXY_PORT;
             } else {
                 proxyPort = Integer.parseInt(socksProxyPortStr);
             }
