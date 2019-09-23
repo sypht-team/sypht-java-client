@@ -1,10 +1,12 @@
+[![Build Status](https://api.travis-ci.org/sypht-team/sypht-python-client.svg?branch=master)](https://travis-ci.org/sypht-team/sypht-python-client) [![codecov](https://codecov.io/gh/sypht-team/sypht-python-client/branch/master/graph/badge.svg)](https://codecov.io/gh/sypht-team/sypht-python-client)
+
 # Sypht Java Client
 This repository is a Java reference client implementation for working with the Sypht API at https://api.sypht.com.
 
 ## About Sypht
-[Sypht](https://sypht.com) is a SaaS [API]((https://docs.sypht.com/)) which extracts key fields from documents. For 
-example, you can upload an image or pdf of a bill or invoice and extract the amount due, due date, invoice number 
-and biller information. 
+[Sypht](https://sypht.com) is a SaaS [API]((https://docs.sypht.com/)) which extracts key fields from documents. For
+example, you can upload an image or pdf of a bill or invoice and extract the amount due, due date, invoice number
+and biller information.
 
 ### Getting started
 To get started you'll need API credentials, i.e. a `<client_id>` and `<client_secret>`, which can be obtained by registering
