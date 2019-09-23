@@ -1,3 +1,7 @@
+env:
+  global:
+    - CODECOV_TOKEN=fa697775-1078-42e9-9165-016cb98fa20e
+
 language: java
 
 script: "mvn cobertura:cobertura"
