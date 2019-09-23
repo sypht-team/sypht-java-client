@@ -1,7 +1,7 @@
 [![Build Status](https://api.travis-ci.org/sypht-team/sypht-java-client.svg?branch=master)](https://travis-ci.org/sypht-team/sypht-java-client) [![codecov](https://codecov.io/gh/sypht-team/sypht-java-client/branch/master/graph/badge.svg)](https://codecov.io/gh/sypht-team/sypht-java-client)
 
 # Sypht Java Client
-This repository is a Java reference client implementation for working with the Sypht API at https://api.sypht.com.
+This repository is a Java reference client implementation for working with the Sypht API [![Docs](https://img.shields.io/badge/API%20Docs-markdown-lightgrey.svg?style=flat-square)](https://docs.sypht.com).
 
 ## About Sypht
 [Sypht](https://sypht.com) is a SaaS [API]((https://docs.sypht.com/)) which extracts key fields from documents. For
