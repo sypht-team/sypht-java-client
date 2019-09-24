@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/sypht-team/sypht-java-client.svg?branch=master)](https://travis-ci.org/sypht-team/sypht-java-client) [![codecov](https://codecov.io/gh/sypht-team/sypht-java-client/branch/master/graph/badge.svg)](https://codecov.io/gh/sypht-team/sypht-java-client)
+[![Build Status](https://travis-ci.com/sypht-team/sypht-java-client.svg?branch=master)](https://travis-ci.com/sypht-team/sypht-java-client.svg?branch=master) [![codecov](https://codecov.io/gh/sypht-team/sypht-java-client/branch/master/graph/badge.svg)](https://codecov.io/gh/sypht-team/sypht-java-client)
 
 # Sypht Java Client
 This repository is a Java reference client implementation for working with the Sypht API. [![Docs](https://img.shields.io/badge/API%20Docs-site-lightgrey.svg?style=flat-square)](https://docs.sypht.com)
