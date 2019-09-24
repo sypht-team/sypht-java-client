@@ -1,5 +1,3 @@
-![Sypht Logo](https://media.licdn.com/dms/image/C560BAQEZQOCLNx5hTg/company-logo_100_100/0?e=1577318400&v=beta&t=OOg1JSN6yqaPspgnbhl0gqqMXDB5QZwlsUfdhAqANz4)
-
 [![Build Status](https://travis-ci.com/sypht-team/sypht-java-client.svg?branch=master)](https://travis-ci.com/sypht-team/sypht-java-client.svg?branch=master) [![codecov](https://codecov.io/gh/sypht-team/sypht-java-client/branch/master/graph/badge.svg)](https://codecov.io/gh/sypht-team/sypht-java-client)
 
 # Sypht Java Client
