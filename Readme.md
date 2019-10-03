@@ -8,14 +8,14 @@ This repository is a Java reference client implementation for working with the S
 example, you can upload an image or pdf of a bill or invoice and extract the amount due, due date, invoice number
 and biller information.
 
-### Getting started
+## Getting started
 To get started you'll need API credentials, i.e. a `<client_id>` and `<client_secret>`, which can be obtained by registering
 for an [account](https://www.sypht.com/signup/developer)
 
-### Prerequisites
+## Prerequisites
 JDK8 and upwards are supported.
 
-### Installation
+## Installation
 Sypht Java Client is available on maven central:
 
 ```Xml
@@ -26,7 +26,7 @@ Sypht Java Client is available on maven central:
 </dependency>
 ```
 
-### Usage
+## Usage
 Populate these system environment variables with the credentials generated above:
 
 ```Bash
@@ -48,3 +48,9 @@ System.out.println(
                 client.upload(
                         new File("receipt.pdf"))));
 ```
+
+## License
+The software in this repository is available as open source under the terms of the [Apache License](https://github.com/sypht-team/sypht-java-client/blob/master/LICENSE).
+
+## Code of Conduct
+Everyone interacting in the project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/sypht-team/sypht-java-client/blob/master/CODE_OF_CONDUCT.md).
