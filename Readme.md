@@ -21,8 +21,9 @@ brew cask install adoptopenjdk8
 ```
 
 ## Installation
-Sypht Java Client is available on maven central, add this to your pom.xml:
+Sypht Java Client is available on maven central
 
+### Maven
 ```Xml
 <dependency>
   <groupId>com.sypht</groupId>
@@ -30,6 +31,25 @@ Sypht Java Client is available on maven central, add this to your pom.xml:
   <version>1.3</version>
 </dependency>
 ```
+
+### Gradle
+```
+// https://mvnrepository.com/artifact/com.sypht/sypht-java-client
+compile group: 'com.sypht', name: 'sypht-java-client', version: '1.3'
+```
+
+### SBT
+```
+// https://mvnrepository.com/artifact/com.sypht/sypht-java-client
+libraryDependencies += "com.sypht" % "sypht-java-client" % "1.3"
+```
+
+### Ivy
+```
+<!-- https://mvnrepository.com/artifact/com.sypht/sypht-java-client -->
+<dependency org="com.sypht" name="sypht-java-client" rev="1.3"/>
+```
+
 
 ## Usage
 Populate these system environment variables with the credentials generated above:
