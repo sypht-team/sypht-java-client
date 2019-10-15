@@ -33,13 +33,13 @@ Sypht Java Client is available on maven central
 ```
 
 ### Gradle
-```
+```Gradle
 // https://mvnrepository.com/artifact/com.sypht/sypht-java-client
 compile group: 'com.sypht', name: 'sypht-java-client', version: '1.3'
 ```
 
 ### SBT
-```
+```SBT
 // https://mvnrepository.com/artifact/com.sypht/sypht-java-client
 libraryDependencies += "com.sypht" % "sypht-java-client" % "1.3"
 ```
