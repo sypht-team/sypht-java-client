@@ -45,7 +45,7 @@ libraryDependencies += "com.sypht" % "sypht-java-client" % "1.3"
 ```
 
 ### Ivy
-```
+```Ivy
 <!-- https://mvnrepository.com/artifact/com.sypht/sypht-java-client -->
 <dependency org="com.sypht" name="sypht-java-client" rev="1.3"/>
 ```
