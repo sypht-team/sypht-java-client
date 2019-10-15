@@ -21,7 +21,7 @@ brew cask install adoptopenjdk8
 ```
 
 ## Installation
-Sypht Java Client is available on maven central:
+Sypht Java Client is available on maven central, add this to your pom.xml:
 
 ```Xml
 <dependency>
