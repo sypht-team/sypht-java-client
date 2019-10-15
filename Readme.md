@@ -15,6 +15,11 @@ for an [account](https://www.sypht.com/signup/developer)
 ## Prerequisites
 JDK8 and upwards are supported.
 
+```Bash
+brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk8
+```
+
 ## Installation
 Sypht Java Client is available on maven central:
 
