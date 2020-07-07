@@ -1,4 +1,6 @@
+.settings
 .idea
 target
 *.iml
 .envrc
+.DS_Store

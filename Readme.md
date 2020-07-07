@@ -28,26 +28,26 @@ Sypht Java Client is available on maven central
 <dependency>
   <groupId>com.sypht</groupId>
   <artifactId>sypht-java-client</artifactId>
-  <version>1.3</version>
+  <version>1.4</version>
 </dependency>
 ```
 
 ### Gradle
 ```Gradle
 // https://mvnrepository.com/artifact/com.sypht/sypht-java-client
-compile group: 'com.sypht', name: 'sypht-java-client', version: '1.3'
+compile group: 'com.sypht', name: 'sypht-java-client', version: '1.4'
 ```
 
 ### SBT
 ```SBT
 // https://mvnrepository.com/artifact/com.sypht/sypht-java-client
-libraryDependencies += "com.sypht" % "sypht-java-client" % "1.3"
+libraryDependencies += "com.sypht" % "sypht-java-client" % "1.4"
 ```
 
 ### Ivy
 ```Ivy
 <!-- https://mvnrepository.com/artifact/com.sypht/sypht-java-client -->
-<dependency org="com.sypht" name="sypht-java-client" rev="1.3"/>
+<dependency org="com.sypht" name="sypht-java-client" rev="1.4"/>
 ```
 
 

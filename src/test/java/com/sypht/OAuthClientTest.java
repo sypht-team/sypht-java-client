@@ -40,6 +40,6 @@ public class OAuthClientTest extends TestCase {
         OAuthClient client = new OAuthClient();
         String token = client.login();
         assertTrue("no response from login service", token != null);
-        assertTrue("doesn't look like a JWT Token", token.startsWith("eyJ0"));
+        assertTrue("doesn't look like a JWT Token", token.startsWith("eyJ"));
     }
 }
